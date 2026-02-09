@@ -1,5 +1,6 @@
 package crm.controller;
 
+import crm.dto.MessageRequest;
 import crm.model.Ticket;
 import crm.service.TicketService;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ public class TestController {
     }
 
     @PostMapping
-    public Ticket create(@RequestBody String message) {
-        return ticketService.createTicket(message);
+    public Ticket createticket(@RequestBody MessageRequest request) {
+        return ticketService.createTicket(request.getContent());
     }
 }
