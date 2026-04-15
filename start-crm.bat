@@ -18,7 +18,7 @@ set NG_TOKEN=3A8BnzfcGwwZQJXzlq0pkuyjoyv_5AMqXMdgypbA6XcCxEgMx
 set JWT_TOKEN=XqZt9vLmA2rYwPjK4sNbGhUfE7cTdVoR
 
 :: PATHS - EDIT THESE TO MATCH YOUR MACHINE
-set BACKEND_PATH=C:\Users\user\Desktop\pfe\crm
+set BACKEND_PATH=C:\Users\user\Desktop\pfe\crm-backend
 set FRONTEND_PATH=C:\Users\user\Desktop\pfe\crm-frontend
 set PYTHON_PATH=C:\Users\user\Desktop\pfe\crmAIservice
 set PYTHON_FILE=app.py
