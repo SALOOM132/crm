@@ -32,23 +32,14 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
-  getToken(): string | null {
-    return localStorage.getItem('token');
-  }
+  getToken(): string | null { return localStorage.getItem('token'); }
+  getRole(): string | null { return localStorage.getItem('role'); }
+  getFullName(): string | null { return localStorage.getItem('fullName'); }
+  getUsername(): string | null { return localStorage.getItem('username'); }
 
-  getRole(): string | null {
-    return localStorage.getItem('role');
-  }
-
-  getFullName(): string | null {
-    return localStorage.getItem('fullName');
-  }
-
-  isLoggedIn(): boolean {
-    return !!this.getToken();
-  }
-
-  isAdmin(): boolean {
-    return this.getRole() === 'ADMIN';
-  }
+  isLoggedIn(): boolean { return !!this.getToken(); }
+  isAgent(): boolean { return this.getRole() === 'AGENT'; }
+  isAdmin(): boolean { return this.getRole() === 'ADMIN'; }
+  isSuperAdmin(): boolean { return this.getRole() === 'SUPER_ADMIN'; }
+  isAdminOrAbove(): boolean { return this.isAdmin() || this.isSuperAdmin(); }
 }

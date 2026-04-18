@@ -32,12 +32,15 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                // Public endpoints
+                // Public
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/webhook").permitAll()
-                // Admin only
-                .requestMatchers("/admin/**").hasRole("ADMIN")
-                // Authenticated users (both roles)
+                // Super admin only — manage admins
+                .requestMatchers("/superadmin/**").hasRole("SUPER_ADMIN")
+                // Admin + Super admin — manage agents + settings
+                .requestMatchers("/admin/**").hasAnyRole("ADMIN", "SUPER_ADMIN")
+                .requestMatchers("/settings/**").hasAnyRole("ADMIN", "SUPER_ADMIN")
+                // All authenticated
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

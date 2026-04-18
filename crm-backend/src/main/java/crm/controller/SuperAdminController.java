@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,32 +19,38 @@ import crm.model.enumerations.RoleEnum;
 import crm.service.AuthService;
 
 @RestController
-@RequestMapping("/admin")
-public class AdminController {
+@RequestMapping("/superadmin")
+public class SuperAdminController {
 
     private final AuthService authService;
 
-    public AdminController(AuthService authService) {
+    public SuperAdminController(AuthService authService) {
         this.authService = authService;
     }
 
-    // GET /admin/users — only agents
-    @GetMapping("/users")
-    public List<User> getAgents() {
+    // GET /superadmin/admins — list all admins
+    @GetMapping("/admins")
+    public List<User> getAllAdmins() {
         return authService.getAllUsers().stream()
-                .filter(u -> u.getRole() == RoleEnum.AGENT)
+                .filter(u -> u.getRole() == RoleEnum.ADMIN)
                 .collect(Collectors.toList());
     }
 
-    // POST /admin/users — create agent only
-    @PostMapping("/users")
-    public ResponseEntity<?> createAgent(@RequestBody Map<String, String> body) {
+    // GET /superadmin/users — list all users
+    @GetMapping("/users")
+    public List<User> getAllUsers() {
+        return authService.getAllUsers();
+    }
+
+    // POST /superadmin/admins — create an admin
+    @PostMapping("/admins")
+    public ResponseEntity<?> createAdmin(@RequestBody Map<String, String> body) {
         try {
             User user = authService.createUser(
                     body.get("username"),
                     body.get("password"),
                     body.get("fullName"),
-                    RoleEnum.AGENT
+                    RoleEnum.ADMIN
             );
             return ResponseEntity.ok(user);
         } catch (Exception e) {
@@ -53,22 +58,16 @@ public class AdminController {
         }
     }
 
-    // DELETE /admin/users/{id}
-    @DeleteMapping("/users/{id}")
-    public ResponseEntity<?> deleteAgent(@PathVariable Long id) {
+    // DELETE /superadmin/admins/{id}
+    @DeleteMapping("/admins/{id}")
+    public ResponseEntity<?> deleteAdmin(@PathVariable Long id) {
         authService.deleteUser(id);
-        return ResponseEntity.ok(Map.of("message", "Agent deleted"));
+        return ResponseEntity.ok(Map.of("message", "Admin deleted"));
     }
 
-    // PATCH /admin/users/{id}/toggle
+    // PATCH /superadmin/users/{id}/toggle
     @PatchMapping("/users/{id}/toggle")
-    public User toggleAgent(@PathVariable Long id) {
+    public User toggleUser(@PathVariable Long id) {
         return authService.toggleUser(id);
-    }
-
-    // PUT /admin/users/{id}
-    @PutMapping("/users/{id}")
-    public User updateAgent(@PathVariable Long id, @RequestBody Map<String, String> body) {
-        return authService.updateUser(id, body.get("fullName"), body.get("password"));
     }
 }

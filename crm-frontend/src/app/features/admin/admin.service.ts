@@ -6,7 +6,7 @@ export interface AppUser {
   id: number;
   username: string;
   fullName: string;
-  role: 'ADMIN' | 'AGENT';
+  role: 'ADMIN' | 'AGENT' |'SUPER_ADMIN';
   enabled: boolean;
 }
 
